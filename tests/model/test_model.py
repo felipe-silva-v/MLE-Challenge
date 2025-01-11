@@ -1,3 +1,5 @@
+import os
+import pathlib
 import unittest
 import pandas as pd
 
@@ -28,7 +30,13 @@ class TestModel(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.model = DelayModel()
-        self.data = pd.read_csv(filepath_or_buffer="../data/data.csv")
+        # Resolve the absolute path to the data file
+        base_path = pathlib.Path(__file__).parent.resolve()
+        data_path = base_path.parents[1] / "data" / "data.csv"  # Move two levels up, then into data/
+        print(f"Resolved data path: {data_path}")
+        if not data_path.exists():
+            raise FileNotFoundError(f"Test data file not found at {data_path}")
+        self.data = pd.read_csv(filepath_or_buffer=data_path)
         
 
     def test_model_preprocess_for_training(
