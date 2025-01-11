@@ -1,7 +1,38 @@
+# Continuous Delivery Workflow
 name: 'Continuous Delivery'
 
 on:
-  ...
+  push:
+    branches:
+      - main
 
 jobs:
-  ...
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: noble-purpose-447521-c9
+
+      - name: Authenticate with Docker
+        run: |
+          gcloud auth configure-docker
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t gcr.io/noble-purpose-447521-c9/mle-challenge-api .
+          docker push gcr.io/noble-purpose-447521-c9/mle-challenge-api
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy mle-challenge-api \
+              --image gcr.io/noble-purpose-447521-c9/mle-challenge-api \
+              --platform managed \
+              --region us-central1 \
+              --allow-unauthenticated
