@@ -141,11 +141,55 @@ The goal of Part II was to deploy the trained machine learning model as a RESTfu
 
 ---
 
-## Conclusion
+## Part III: Deployment on Google Cloud Platform (GCP)
 
-I successfully completed the challenge by:
-1. Implementing a robust machine learning model with LightGBM to predict flight delays.
-2. Deploying the model as a RESTful API using FastAPI, with comprehensive input validation and error handling.
+### Objective
 
-This solution demonstrates my strong proficiency in machine learning, API development, and problem-solving tailored to real-world scenarios at LATAM Airlines.
+The goal of Part III was to deploy the API on a cloud provider, specifically Google Cloud Platform (GCP), ensuring that:
 
+1. The deployed API is accessible via a public URL.
+2. The API passes stress tests defined in the challenge.
+
+### Implementation
+
+#### Deployment Process
+
+1. **Setup Google Cloud Project:**
+
+   - A new GCP project (`noble-purpose-447521-c9`) was created.
+   - Required APIs were enabled: Cloud Run, Cloud Build, and Artifact Registry.
+
+2. **Dockerization and Deployment:**
+
+   - The API was containerized using a `Dockerfile` with a lightweight Python image and system dependencies (e.g., `libgomp1`).
+   - The Docker image was built and pushed to Google Container Registry (GCR).
+   - The containerized API was deployed to **Cloud Run** with unauthenticated access enabled.
+   - A public URL for the API was provided:
+     ```
+     https://mle-challenge-api-795612045187.us-central1.run.app
+     ```
+
+#### Stress Testing
+
+1. **Stress Test Configuration:**
+
+   - Simulated 100 concurrent users over 60 seconds targeting the `/predict` endpoint.
+
+2. **Execution and Results:**
+
+   | Metric                  | Value       |
+   |-------------------------|-------------|
+   | **Total Requests**      | 4465        |
+   | **Failures**            | 0 (0.00%)   |
+   | **Average Response Time** | 400 ms     |
+   | **Maximum Response Time** | 953 ms     |
+   | **Requests per Second** | 74.64 req/s |
+
+   The API demonstrated stability and responsiveness under load.
+
+### Documentation Update
+
+1. The API URL was added to the `Makefile`:
+
+   ```makefile
+   API_URL=https://mle-challenge-api-795612045187.us-central1.run.app
