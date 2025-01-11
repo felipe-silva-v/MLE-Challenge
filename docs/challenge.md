@@ -193,3 +193,59 @@ The goal of Part III was to deploy the API on a cloud provider, specifically Goo
 
    ```makefile
    API_URL=https://mle-challenge-api-795612045187.us-central1.run.app
+
+---
+
+## Part IV: Continuous Integration and Continuous Delivery (CI/CD)
+
+### Objective
+
+The goal of Part IV was to implement a proper CI/CD pipeline to automate testing, building, and deployment processes for the project.
+
+### Implementation
+
+#### CI Workflow
+
+1. **Purpose:**
+   - Automate testing of the project to ensure code quality before merging changes into the main branch.
+
+2. **What was implemented:**
+   - A workflow (`ci.yml`) was created to:
+     - Checkout the repository code.
+     - Set up a Python environment using version 3.10.
+     - Install project dependencies from `requirements.txt`.
+     - Run unit tests using `pytest`, ensuring that all functionalities work as expected.
+     - Generate and upload test reports, including coverage and JUnit results, as artifacts for later review.
+
+3. **Outcome:**
+   - This ensures that every code change is validated before it can be merged into the `main` branch, improving code quality and preventing bugs.
+
+---
+
+#### CD Workflow
+
+1. **Purpose:**
+   - Automate the deployment process, ensuring the API is deployed to Google Cloud Run after successful testing.
+
+2. **What was implemented:**
+   - A workflow (`cd.yml`) was created to:
+     - Authenticate with Google Cloud Platform using a Service Account key stored as a GitHub secret (`GCP_SA_KEY`).
+     - Build the Docker image for the API.
+     - Push the Docker image to Google Container Registry (GCR).
+     - Deploy the Docker image to Google Cloud Run, making the API publicly accessible.
+
+3. **Secrets Configuration:**
+   - `GCP_SA_KEY`: Contains the Service Account credentials for Google Cloud authentication.
+   - `GCP_PROJECT_ID`: The Google Cloud Project ID (`noble-purpose-447521-c9`), stored as a GitHub secret for flexibility and security.
+
+4. **Outcome:**
+   - The deployment process is now automated, reducing human intervention and ensuring faster, more reliable updates to the API.
+
+---
+
+### Conclusion
+
+By implementing a proper CI/CD pipeline:
+1. Code quality is ensured through automated testing before deployment.
+2. Deployment to Google Cloud Run is fully automated, making it faster and less error-prone.
+3. The project is now scalable and ready for real-world use with continuous integration and delivery practices in place.
