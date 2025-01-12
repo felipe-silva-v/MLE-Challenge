@@ -187,13 +187,6 @@ The goal of Part III was to deploy the API on a cloud provider, specifically Goo
 
    The API demonstrated stability and responsiveness under load.
 
-### Documentation Update
-
-1. The API URL was added to the `Makefile`:
-
-   ```makefile
-   API_URL=https://mle-challenge-api-795612045187.us-central1.run.app
-
 ---
 
 ## Part IV: Continuous Integration and Continuous Delivery (CI/CD)
@@ -213,7 +206,7 @@ The goal of Part IV was to implement a proper CI/CD pipeline to automate testing
    - A workflow (`ci.yml`) was created to:
      - Checkout the repository code.
      - Set up a Python environment using version 3.10.
-     - Install project dependencies from `requirements.txt`.
+     - Install project dependencies from `requirements.txt` and `requirements-test.txt`.
      - Run unit tests using `pytest`, ensuring that all functionalities work as expected.
      - Generate and upload test reports, including coverage and JUnit results, as artifacts for later review.
 
